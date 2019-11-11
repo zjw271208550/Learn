@@ -1,0 +1,11 @@
+
+spring:
+  datasource:
+    name: dataSource
+    url: jdbc:postgresql://172.16.32.41:6543/db_stream?ApplicationName=bigdatastream
+    username: sa
+    password: 6789@jkl
+    druid:
+      initial-size: 1
+      max-active: 1
+      min-idle: 1
