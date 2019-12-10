@@ -19,8 +19,8 @@ public class ServiceFunction {
     /**
      * 检查数据是否被篡改
      * @param mapper 继承 BCMapper 的 Mapper
-     * @param dataInDB
-     * @return
+     * @param dataInDB 要被检验的数据
+     * @return 是否
      */
     public static boolean checkDataById(BCMapper mapper, BlockData dataInDB){
         UTxOutORM uTxOut = mapper.getUTxOutByDataId(dataInDB.getDataId());
@@ -32,6 +32,11 @@ public class ServiceFunction {
         }
     }
 
+    /**
+     * 检查是否已经创世
+     * @param mapper 继承 BCMapper 的 Mapper
+     * @return 是否
+     */
     public static boolean hasInit(BCMapper mapper){
         BlockORM initBlockInfo = mapper.getInitBlockInfo();
         if(null==initBlockInfo){
@@ -48,6 +53,11 @@ public class ServiceFunction {
         }
     }
 
+    /**
+     * 创世
+     * @param mapper 继承 BCMapper 的 Mapper
+     * @return 成功与否
+     */
     public static boolean initBlock(BCMapper mapper){
         Block initBlock = new Block(1,0,0,null,
                 "","",0, Consts.HASH_DIFFICULTY_INIT);
@@ -60,6 +70,14 @@ public class ServiceFunction {
         return true;
     }
 
+    /**
+     * 添加一个新的数据，数据准备上链
+     * @param mapper 继承 BCMapper 的 Mapper
+     * @param publicKey 数据所有者公钥
+     * @param privateKey 数据所有者私钥
+     * @param data 数据
+     * @return 成功与否
+     */
     public static boolean addNewData(BCMapper mapper,String publicKey,String privateKey, BlockData data)
     throws Exception{
         TransactionIn txIn = new TransactionIn("",1,null);
@@ -80,6 +98,12 @@ public class ServiceFunction {
         return true;
     }
 
+    /**
+     * 挖掘未上链的数据，数据上链
+     * @param mapper 继承 BCMapper 的 Mapper
+     * @param publicKey 挖掘者公钥
+     * @return 成功与否
+     */
     public static boolean mineTransactions(BCMapper mapper,String publicKey) throws Exception{
         List<TxORM> txOrms = mapper.getTxsByNull();
         if(null == txOrms || txOrms.size()==0){

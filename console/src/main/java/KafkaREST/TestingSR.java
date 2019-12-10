@@ -2,6 +2,7 @@ package KafkaREST;
 
 import org.apache.commons.lang3.time.StopWatch;
 import java.util.*;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -34,15 +35,17 @@ public class TestingSR {
                 data.put("key" + i, "value" + i);
             }
             ExecutorService executor = Executors.newFixedThreadPool(2);
-            Future f1 =  executor.submit(new Send1Thread(data));
-            Future f2 =  executor.submit(new SendAllThread(data));
-            f1.get();
-            f2.get();
+            Future<Long> f1 =  executor.submit(new Send1Thread(data));
+            Future<Long> f2 =  executor.submit(new SendAllThread(data));
+            long rel1 = f1.get();
+            long rel2 = f2.get();
+            System.out.println("Rest Send 1 for "+data.size()+" use : "+rel1);
+            System.out.println("Rest Send all for "+data.size()+" use : "+rel2);
             executor.shutdown();
         }
 
         /**
-         * 测试一批数据逐条发送效率和成批发送效率
+         * 测试一批数据逐条发送效率
          */
         KafkaClientTool<String,String> producer = new KafkaClientTool<>(CLIENT_HOST,CLIENT_PORT);
         for(int size : DATA_SIZE) {
@@ -51,22 +54,15 @@ public class TestingSR {
             for (int i = 0; i < size; i++) {
                 data.put("key" + i, "value" + i);
             }
-            // ExecutorService executor = Executors.newFixedThreadPool(1);
-            // Future f1 =  executor.submit(new ClientSend1Thread(producer,data));
-            // f1.get();
-            // executor.shutdown();
-            new ClientSend1Thread(producer,data).run();
+            ExecutorService executor = Executors.newFixedThreadPool(1);
+            Future<Long> f1 =  executor.submit(new ClientSend1Thread(producer,data));
+            long rel = f1.get();
+            System.out.println("Client Send 1 for "+data.size()+" use : "+rel);
+            executor.shutdown();
         }
 
         /**
          * 测试 1W条数据并发单条发送效率
-         * 并发数      时间
-         * 10         9454
-         * 16         4865
-         * 32         4849
-         * 64         4654
-         * 100        4453
-         * 150        3928
          */
         HashMap<Integer,String> data = new HashMap<>();
         for(int i=0; i<10000;i++){
@@ -74,7 +70,6 @@ public class TestingSR {
         }
         StopWatch stopWatch = new StopWatch();
         for(int size: POOL_SIZE){
-            stopWatch.reset();
             stopWatch.start();
             ExecutorService executor = Executors.newFixedThreadPool(size);
             LinkedList<Future> futures = new LinkedList<>();
@@ -91,11 +86,7 @@ public class TestingSR {
             executor.shutdown();
             stopWatch.stop();
             System.out.println("Send 1 for "+data.size()+" with "+size+" threads use : "+stopWatch.getTime());
-            // try {
-            //     Thread.sleep(3000);
-            // }catch (InterruptedException e){
-            //
-            // }
+            stopWatch.reset();
         }
 
         HttpClientPoolTool.closeConnectionPool();
@@ -106,7 +97,7 @@ public class TestingSR {
     /**
      * Kafka-rest逐条发送线程
      */
-    public static class Send1Thread  implements Runnable{
+    public static class Send1Thread  implements Callable<Long> {
         private HashMap<String,String> data;
 
         public Send1Thread(HashMap<String,String> data) {
@@ -114,11 +105,10 @@ public class TestingSR {
         }
 
         @Override
-        public void run() {
+        public Long call() {
             StopWatch stopWatch = new StopWatch();
             long time = 0L;
             for(Map.Entry<String,String> entry:this.data.entrySet()){
-                stopWatch.reset();
                 stopWatch.start();
                 String rel = sendMessage(
                             REST_HOST,
@@ -131,25 +121,19 @@ public class TestingSR {
                             ENCODE);
                 stopWatch.stop();
                 time = time + stopWatch.getTime();
+                stopWatch.reset();
                 if(KafkaRestTool.checkSuccess(rel)){
                    System.out.print("$FAIL$");
                 }
-                // try {
-                //     Thread.sleep(100);
-                // }catch (InterruptedException e){
-                //
-                // }
-
             }
-            System.out.println("Send 1 for "+data.size()+" use : "+time);
-
+            return time;
         }
     }
 
     /**
      * Kafka-rest成批发送线程
      */
-    public static class SendAllThread  implements Runnable{
+    public static class SendAllThread  implements Callable<Long> {
         private HashMap<String,String> data;
 
         public SendAllThread(HashMap<String,String> data) {
@@ -157,7 +141,7 @@ public class TestingSR {
         }
 
         @Override
-        public void run() {
+        public Long call() {
             StopWatch stopWatch = new StopWatch();
             stopWatch.start();
             String rel = sendMessageAll(
@@ -172,14 +156,14 @@ public class TestingSR {
                 System.out.print("$FAIL$");
             }
             stopWatch.stop();
-            System.out.println("Send all for "+data.size()+" use : "+stopWatch.getTime());
+            return stopWatch.getTime();
         }
     }
 
     /**
      * Kafka-rest单条条发送线程
      */
-    public static class SendThread  implements Runnable{
+    public static class SendThread  implements Callable<Long> {
         private String key;
         private String value;
 
@@ -189,7 +173,7 @@ public class TestingSR {
         }
 
         @Override
-        public void run() {
+        public Long call() {
             StopWatch stopWatch = new StopWatch();
             stopWatch.start();
             String rel = sendMessage(
@@ -205,13 +189,16 @@ public class TestingSR {
             if(KafkaRestTool.checkSuccess(rel)){
                 System.out.print("$FAIL$");
             }
+            return stopWatch.getTime();
         }
+
+
     }
 
     /**
      * Kafka-client逐条发送线程
      */
-    public static class ClientSend1Thread  implements Runnable{
+    public static class ClientSend1Thread  implements Callable<Long>{
         private KafkaClientTool<String,String> producer;
         private HashMap<String,String> data;
 
@@ -221,11 +208,10 @@ public class TestingSR {
         }
 
         @Override
-        public void run() {
+        public Long call() {
             StopWatch stopWatch = new StopWatch();
             long time = 0L;
             for(Map.Entry<String,String> entry:this.data.entrySet()){
-                stopWatch.reset();
                 stopWatch.start();
                 this.producer.sendMessage(
                                 TOPIC,
@@ -234,14 +220,9 @@ public class TestingSR {
                                 entry.getValue());
                 stopWatch.stop();
                 time = time + stopWatch.getTime();
-                // try {
-                //     Thread.sleep(100);
-                // }catch (InterruptedException e){
-                //
-                // }
+                stopWatch.reset();
             }
-            System.out.println("Send 1 for "+data.size()+" use : "+time);
-
+            return time;
         }
     }
 

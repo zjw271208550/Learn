@@ -11,6 +11,11 @@ import java.text.DecimalFormat;
 
 public class HashFunction {
 
+    /**
+     * 生成该区块的 Hash
+     * @param block 区块
+     * @return Hash
+     */
     public static String generateHash(Block block){
         MessageDigest messageDigest;
 
@@ -54,11 +59,22 @@ public class HashFunction {
         return encode;
     }
 
+    /**
+     * 检查生成的 Hash是否符合 Difficulty的要求
+     * @param hash Hash
+     * @param difficulty 难度
+     * @return 是否
+     */
     private static boolean checkHashDifficulty(String hash,int difficulty){
         String hashBinary = hex2Binary(hash);
         return hashBinary.startsWith(generatePrefix(difficulty));
     }
 
+    /**
+     * bytes转16进制数的字符串
+     * @param bytes bytes
+     * @return 16进制数的字符串
+     */
     private static String bytes2Hex(byte[] bytes){
         StringBuilder stringBuilder = new StringBuilder("");
         if (bytes == null || bytes.length <= 0) {
@@ -75,6 +91,11 @@ public class HashFunction {
         return stringBuilder.toString();
     }
 
+    /**
+     * bytes转2进制数的字符串
+     * @param bytes bytes
+     * @return 2进制数的字符串
+     */
     private static String bytes2Binary(byte[] bytes){
         StringBuilder stringBuilder = new StringBuilder("");
         if (bytes == null || bytes.length <= 0) {
@@ -86,6 +107,11 @@ public class HashFunction {
         return stringBuilder.toString().substring(0, stringBuilder.length() - 1);
     }
 
+    /**
+     * 16进制数的字符串转2进制数的字符串
+     * @param hex 16进制数的字符串
+     * @return 2进制数的字符串
+     */
     private static String hex2Binary(String hex){
         char[] strChar=hex.toCharArray();
         StringBuilder stringBuilder = new StringBuilder("");
@@ -98,8 +124,11 @@ public class HashFunction {
         return stringBuilder.toString();
     }
 
-
-
+    /**
+     * 生成难度对应的 Hash前缀用于难度验证
+     * @param offset 难度
+     * @return 前缀字符串
+     */
     private static String generatePrefix(int offset){
         StringBuilder prefix = new StringBuilder();
         for (int i=0;i<offset;i++){
@@ -108,6 +137,11 @@ public class HashFunction {
         return prefix.toString();
     }
 
+    /**
+     * SHA256编码
+     * @param nocode 未编码字符串
+     * @return 编码后字符串
+     */
     public static String getSHA256Code(String nocode){
         String encode;
         try{

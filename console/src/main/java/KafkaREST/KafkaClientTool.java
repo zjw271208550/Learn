@@ -27,8 +27,7 @@ public class KafkaClientTool<K,V> {
         prop.put(ProducerConfig.MAX_REQUEST_SIZE_CONFIG,"1048576");
         prop.put(ProducerConfig.LINGER_MS_CONFIG,"0");
         prop.put(ProducerConfig.ACKS_CONFIG,"1");
-        //todo fasong pidaxiao peizhi
-        //todo http pool
+
         prop.put(ProducerConfig.ACKS_CONFIG, "1");
         this.producer = new KafkaProducer<K, V>(prop);
         this.callback = new Callback() {

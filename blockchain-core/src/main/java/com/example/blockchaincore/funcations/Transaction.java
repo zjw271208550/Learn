@@ -192,58 +192,59 @@ public class Transaction {
         return referencedUTxOut.getInfo();
     }
 
-    public static boolean isLegalBlockTransaction(LinkedList<TransactionGroup> transactionBodies,
-                                                  List<TransactionOutUnspent> unspents,
-                                                  int blockIndex,
-                                                  BlockData baseData)throws Exception{//todo baseData 传入
-        //验证块内第一条
-        TransactionGroup body0 = transactionBodies.get(0);
-        if(!isLegalBaseTransaction(body0, blockIndex, baseData)){
-            return false;
-        }
-        LinkedList<TransactionIn> txIns = new LinkedList<>();
-        for(TransactionGroup body:transactionBodies){
-            txIns.addAll(body.getTxIns());
-        }
-        if (hasDuplicates(txIns)) {
-            return false;
-        }
-        transactionBodies.poll();
-        LinkedList<TransactionGroup> transactionBodiesNormal = transactionBodies;
-        boolean rel = true;
-        for(TransactionGroup body:transactionBodies){
-            rel = rel && isLegalTransaction(body,unspents);
-        }
-        return rel;
-
-    }
-
-    private static boolean hasDuplicates(LinkedList<TransactionIn> txIns){
-        LinkedList<String> outAddresses = new LinkedList<>();
-        for(TransactionIn txIn:txIns){
-            outAddresses.add(txIn.getOutFromTxId());
-        }
-        Set<String> outAddressesSet = new HashSet<>(outAddresses);
-        return outAddresses.size()==outAddressesSet.size();
-    }
-
-    private static boolean isLegalBaseTransaction(TransactionGroup body,
-                                                  int blockIndex,
-                                                  BlockData baseData){
-        if(null==body)
-            return false;
-        if(!generateId(body).equals(body.getId()))
-            return false;
-        if(body.getTxIns().size() != 1)
-            return false;
-        if(body.getTxIns().get(0).getOutFromIndex() != blockIndex)
-            return false;
-        if(body.getTxOuts().size() != 1)
-            return false;
-        if(!body.getTxOuts().get(0).getInfo().equals(baseData))
-            return false;
-        return true;
-    }
+    // public static boolean isLegalBlockTransaction(LinkedList<TransactionGroup> transactionBodies,
+    //                                               List<TransactionOutUnspent> unspents,
+    //                                               int blockIndex,
+    //                                               BlockData baseData)throws Exception{
+    //     //todo baseData 传入
+    //     //验证块内第一条
+    //     TransactionGroup body0 = transactionBodies.get(0);
+    //     if(!isLegalBaseTransaction(body0, blockIndex, baseData)){
+    //         return false;
+    //     }
+    //     LinkedList<TransactionIn> txIns = new LinkedList<>();
+    //     for(TransactionGroup body:transactionBodies){
+    //         txIns.addAll(body.getTxIns());
+    //     }
+    //     if (hasDuplicates(txIns)) {
+    //         return false;
+    //     }
+    //     transactionBodies.poll();
+    //     LinkedList<TransactionGroup> transactionBodiesNormal = transactionBodies;
+    //     boolean rel = true;
+    //     for(TransactionGroup body:transactionBodies){
+    //         rel = rel && isLegalTransaction(body,unspents);
+    //     }
+    //     return rel;
+    //
+    // }
+    //
+    // private static boolean hasDuplicates(LinkedList<TransactionIn> txIns){
+    //     LinkedList<String> outAddresses = new LinkedList<>();
+    //     for(TransactionIn txIn:txIns){
+    //         outAddresses.add(txIn.getOutFromTxId());
+    //     }
+    //     Set<String> outAddressesSet = new HashSet<>(outAddresses);
+    //     return outAddresses.size()==outAddressesSet.size();
+    // }
+    //
+    // private static boolean isLegalBaseTransaction(TransactionGroup body,
+    //                                               int blockIndex,
+    //                                               BlockData baseData){
+    //     if(null==body)
+    //         return false;
+    //     if(!generateId(body).equals(body.getId()))
+    //         return false;
+    //     if(body.getTxIns().size() != 1)
+    //         return false;
+    //     if(body.getTxIns().get(0).getOutFromIndex() != blockIndex)
+    //         return false;
+    //     if(body.getTxOuts().size() != 1)
+    //         return false;
+    //     if(!body.getTxOuts().get(0).getInfo().equals(baseData))
+    //         return false;
+    //     return true;
+    // }
 
     /**
      * 找到与 txOut 匹配的 txOutUnspent
