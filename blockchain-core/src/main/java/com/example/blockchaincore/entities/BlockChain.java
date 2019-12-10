@@ -27,7 +27,7 @@ public class BlockChain {
             throw new RuntimeException("block is illegal");
     }
 
-    public void addBlock(String data){
+    public void addBlock(LinkedList<TransactionGroup> data){
         resetHashDifficulty();
         if(this.lastIndex==0) {
             Block block = new Block(lastIndex, data, lastHash, lastHashDifficulty);
@@ -91,5 +91,10 @@ public class BlockChain {
             float rate = Consts.DIFFICULTY_RESET_AFTER_BLOCK * Consts.HASH_GENERATION_TIMEOUT_MS / cost;
             this.lastHashDifficulty = (int) (this.lastHashDifficulty * rate);
         }
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
     }
 }

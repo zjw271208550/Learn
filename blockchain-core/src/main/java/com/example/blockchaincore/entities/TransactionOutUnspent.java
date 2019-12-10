@@ -3,24 +3,24 @@ package com.example.blockchaincore.entities;
 import com.example.blockchaincore.api.BlockData;
 
 public class TransactionOutUnspent {
-    private String senderAddress;
+    private String toAddress;//to reciver
     private BlockData info;
-    private String outFromAddress;
+    private String outFromTxId;
     private int outFromIndex;
 
-    public TransactionOutUnspent(String senderAddress, BlockData info, String outFromAddress, int outFromIndex) {
-        this.senderAddress = senderAddress;
+    public TransactionOutUnspent(String toAddress, BlockData info, String outFromTxId, int outFromIndex) {
+        this.toAddress = toAddress;
         this.info = info;
-        this.outFromAddress = outFromAddress;
+        this.outFromTxId = outFromTxId;
         this.outFromIndex = outFromIndex;
     }
 
-    public String getSenderAddress() {
-        return senderAddress;
+    public String getToAddress() {
+        return toAddress;
     }
 
-    public void setSenderAddress(String senderAddress) {
-        this.senderAddress = senderAddress;
+    public void setToAddress(String toAddress) {
+        this.toAddress = toAddress;
     }
 
     public BlockData getInfo() {
@@ -31,12 +31,12 @@ public class TransactionOutUnspent {
         this.info = info;
     }
 
-    public String getOutFromAddress() {
-        return outFromAddress;
+    public String getOutFromTxId() {
+        return outFromTxId;
     }
 
-    public void setOutFromAddress(String outFromAddress) {
-        this.outFromAddress = outFromAddress;
+    public void setOutFromTxId(String outFromTxId) {
+        this.outFromTxId = outFromTxId;
     }
 
     public int getOutFromIndex() {

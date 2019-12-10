@@ -5,7 +5,9 @@
       <module fileurl="file://$PROJECT_DIR$/blockchain-client-1/blockchain-client-1.iml" filepath="$PROJECT_DIR$/blockchain-client-1/blockchain-client-1.iml" />
       <module fileurl="file://$PROJECT_DIR$/blockchain-core/blockchain-core.iml" filepath="$PROJECT_DIR$/blockchain-core/blockchain-core.iml" />
       <module fileurl="file://$PROJECT_DIR$/blockchain-server/blockchain-server.iml" filepath="$PROJECT_DIR$/blockchain-server/blockchain-server.iml" />
-      <module fileurl="file://$PROJECT_DIR$/rmi.iml" filepath="$PROJECT_DIR$/rmi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/console/console.iml" filepath="$PROJECT_DIR$/console/console.iml" />
+      <module fileurl="file://$PROJECT_DIR$/junit5/junit5.iml" filepath="$PROJECT_DIR$/junit5/junit5.iml" />
+      <module fileurl="file://$PROJECT_DIR$/learn.iml" filepath="$PROJECT_DIR$/learn.iml" />
       <module fileurl="file://$PROJECT_DIR$/rmi-client/rmi-client.iml" filepath="$PROJECT_DIR$/rmi-client/rmi-client.iml" />
       <module fileurl="file://$PROJECT_DIR$/rmi-server/rmi-server.iml" filepath="$PROJECT_DIR$/rmi-server/rmi-server.iml" />
     </modules>

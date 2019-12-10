@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface InfoMapper {
 
-    @Select("SELECT * FROM db_demo.t_test WHERE c_id={#id}")
+    @Select("SELECT * FROM db_demo.t_test WHERE c_id=#{id}")
     @Results({
             @Result(property = "id", column = "c_id"),
             @Result(property = "name", column = "c_name"),

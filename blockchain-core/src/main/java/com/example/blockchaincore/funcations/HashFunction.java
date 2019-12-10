@@ -2,6 +2,7 @@ package com.example.blockchaincore.funcations;
 
 import com.example.blockchaincore.Consts;
 import com.example.blockchaincore.entities.Block;
+import com.example.blockchaincore.entities.TransactionGroup;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -19,7 +20,9 @@ public class HashFunction {
         StringBuilder nocodeBuilder = new StringBuilder();
         nocodeBuilder.append(block.getIndex());
         nocodeBuilder.append(block.getCreateTimestamp());
-        nocodeBuilder.append(block.getData());
+        for(TransactionGroup tx:block.getData()) {
+            nocodeBuilder.append(tx.toString());
+        }
         nocodeBuilder.append(block.getPreviousHash());
         nocodeBuilder.append(block.getHashDifficulty());
         String nocode = nocodeBuilder.toString();
@@ -33,7 +36,6 @@ public class HashFunction {
                 String nocodetmp = nocode + hashOffset;
                 messageDigest.update(nocodetmp.getBytes(Consts.ENCRYPT_BYTES_CODING));
                 encode = bytes2Hex(messageDigest.digest());
-                System.out.println(encode);
                 if(checkHashDifficulty(encode,block.getHashDifficulty())) {
                     block.setHashOffset(hashOffset);
                     break;
@@ -118,6 +120,12 @@ public class HashFunction {
             throw new RuntimeException("error on loading UTF-8");
         }
         return encode;
+    }
+
+    public static void main(String[] args) throws Exception{
+        System.out.println(getSHA256Code("sadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvba"));
+        Thread.sleep(3000);
+        System.out.println(getSHA256Code("sadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvbasadkhvlkcvjgehfvbxcfvksdjnvlsdfvba"));
     }
 
 }

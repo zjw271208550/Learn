@@ -5,6 +5,8 @@
     <file url="file://$PROJECT_DIR$/blockchain-client-1" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/blockchain-core" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/blockchain-server" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/console" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/junit5" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/rmi-client" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/rmi-server" charset="UTF-8" />
   </component>

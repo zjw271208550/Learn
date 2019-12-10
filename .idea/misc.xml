@@ -9,6 +9,7 @@
         <option value="$PROJECT_DIR$/blockchain-core/pom.xml" />
         <option value="$PROJECT_DIR$/blockchain-server/pom.xml" />
         <option value="$PROJECT_DIR$/blockchain-client-1/pom.xml" />
+        <option value="$PROJECT_DIR$/junit5/pom.xml" />
       </list>
     </option>
   </component>

@@ -1,22 +1,22 @@
 package com.example.blockchaincore.entities;
 
 public class TransactionIn {
-    private String outFromAddress;
+    private String outFromTxId;
     private int outFromIndex;
     private String signature;
 
-    public TransactionIn(String outFromAddress, int outFromIndex, String signature) {
-        this.outFromAddress = outFromAddress;
+    public TransactionIn(String outFromTxId, int outFromIndex, String signature) {
+        this.outFromTxId = outFromTxId;
         this.outFromIndex = outFromIndex;
         this.signature = signature;
     }
 
-    public String getOutFromAddress() {
-        return outFromAddress;
+    public String getOutFromTxId() {
+        return outFromTxId;
     }
 
-    public void setOutFromAddress(String outFromAddress) {
-        this.outFromAddress = outFromAddress;
+    public void setOutFromTxId(String outFromTxId) {
+        this.outFromTxId = outFromTxId;
     }
 
     public int getOutFromIndex() {
